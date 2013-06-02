@@ -42,7 +42,7 @@ class ListStylesheetVariables(sublime_plugin.TextCommand):
 
         if chosen_setup == None:
             return
-            
+
         # Handle imports
         imports = []
         imported_vars = []
@@ -92,7 +92,7 @@ class ListStylesheetVariables(sublime_plugin.TextCommand):
 
         if read_all_views:
             for view in self.view.window().views():
-                viewfn = view.file_name().encode("utf-8")
+                viewfn = self.view.file_name().encode("utf-8")
                 compatible_view = False
 
                 for ext in chosen_setup.extensions:
@@ -105,7 +105,7 @@ class ListStylesheetVariables(sublime_plugin.TextCommand):
             self.view.find_all(chosen_setup.regex, 0, "$1|$2", self.variables)
 
 
-            
+
         self.variables += vars_from_views
         self.variables = list(set(self.variables))
         for i, val in enumerate(self.variables):
