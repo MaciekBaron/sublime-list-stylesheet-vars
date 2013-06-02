@@ -3,5 +3,5 @@
  */
  {
   "readImported": true,
-  "readAllViews": true
+  "readAllViews": false
  }
