@@ -1,5 +1,20 @@
 import sublime, sublime_plugin, os, re
 
+class StyleSheetSetup:
+    def __init__(self, extensions, regex, partials=None, index=None):
+        if partials is None:
+            self.partials = False
+        else:
+            self.partials = partials
+
+        if index is None:
+            self.index = False
+        else:
+            self.index = index
+
+        self.extensions = extensions
+        self.regex = regex
+
 class ListStylesheetVariables(sublime_plugin.TextCommand):
     def run(self, edit):
         settings = sublime.load_settings('stylevariables.sublime-settings')
@@ -8,9 +23,9 @@ class ListStylesheetVariables(sublime_plugin.TextCommand):
         read_all_views = settings.get("readAllViews")
 
         # Define setups
-        less_setup = ((b'.less', b'.lessimport'), "(@[^\s\\]]*): *(.*);")
-        sass_setup = ((b'.sass', b'.scss'), "(\$[^\s\\]]*): *([^;\n]*)")
-        stylus_setup = ((b'.styl',), "([^\s\\]]*) *= *([^;\n]*)")
+        less_setup = StyleSheetSetup((b'.less', b'.lessimport'), "(@[^\s\\]]*): *(.*);")
+        sass_setup = StyleSheetSetup((b'.sass', b'.scss'), "(\$[^\s\\]]*): *([^;\n]*)", True) # Last argument True because using partials
+        stylus_setup = StyleSheetSetup((b'.styl',), "^\s*([^\s\\]]*) *= *([^;\n]*)", False, True)
 
         # Add all setups to the setup tuple
         setups = (less_setup, sass_setup, stylus_setup)
@@ -21,7 +36,7 @@ class ListStylesheetVariables(sublime_plugin.TextCommand):
         fn = self.view.file_name().encode("utf_8")
 
         for setup in setups:
-            for ext in setup[0]: #setup[0] will be the extensions
+            for ext in setup.extensions:
                 if fn.endswith(ext):
                     chosen_setup = setup
 
@@ -33,29 +48,37 @@ class ListStylesheetVariables(sublime_plugin.TextCommand):
         imported_vars = []
 
         if handle_imports:
-            self.view.find_all("@import \"(.*)\"", 0, "/$1", imports)
+            self.view.find_all("@import \"(.*)\"", 0, "$1", imports)
 
             file_dir = os.path.dirname(fn).decode("utf-8")
 
             for i, filename in enumerate(imports):
                 has_extension = False
-                for ext in chosen_setup[0]:
+                for ext in chosen_setup.extensions:
                     if filename.endswith(ext.decode("utf-8")):
                         has_extension = True
 
                 if has_extension == False:
                     # We need to try and find the right extension
-                    for ext in chosen_setup[0]:
+                    for ext in chosen_setup.extensions:
                         ext = ext.decode("utf-8")
-                        if os.path.isfile(os.path.normpath(file_dir + filename + ext)):
+                        if os.path.isfile(os.path.normpath(file_dir + '/' + filename + ext)):
                             filename += ext
                             break
+                        if chosen_setup.partials:
+                            fn_split = os.path.split(filename)
+                            partial_filename = fn_split[0] + "/_" + fn_split[1]
+                            if os.path.isfile(os.path.normpath(file_dir + partial_filename + ext)):
+                                filename = "_" + filename + ext
+                                break
+                        if chosen_setup.index and os.path.isfile(os.path.normpath(file_dir + "/" + filename + "/index" + ext)):
+                            filename += "/index" + ext
                 try:
-                    f = open(os.path.normpath(file_dir + filename), 'r')
+                    f = open(os.path.normpath(file_dir + '/' + filename), 'r')
                     contents = f.read()
                     f.close()
 
-                    m = re.findall(chosen_setup[1], contents)
+                    m = re.findall(chosen_setup.regex, contents)
                     imported_vars = imported_vars + m
                 except:
                     print('Could not load file ' + filename)
@@ -72,14 +95,14 @@ class ListStylesheetVariables(sublime_plugin.TextCommand):
                 viewfn = view.file_name().encode("utf-8")
                 compatible_view = False
 
-                for ext in chosen_setup[0]:
+                for ext in chosen_setup.extensions:
                     if viewfn.endswith(ext):
                         viewvars = []
-                        view.find_all(chosen_setup[1], 0, "$1|$2", viewvars)
+                        view.find_all(chosen_setup.regex, 0, "$1|$2", viewvars)
                         vars_from_views += viewvars
                         break;
         else:
-            self.view.find_all(chosen_setup[1], 0, "$1|$2", self.variables)
+            self.view.find_all(chosen_setup.regex, 0, "$1|$2", self.variables)
             
         self.variables += vars_from_views
         self.variables = list(set(self.variables))
