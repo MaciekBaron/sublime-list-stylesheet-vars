@@ -25,7 +25,7 @@ class ListStylesheetVariables(sublime_plugin.TextCommand):
         # Define setups
         less_setup = StyleSheetSetup((b'.less', b'.lessimport'), "(@[^\s\\]]*): *(.*);")
         sass_setup = StyleSheetSetup((b'.sass', b'.scss'), "(\$[^\s\\]]*): *([^;\n]*)", True) # Last argument True because using partials
-        stylus_setup = StyleSheetSetup((b'.styl',), "^\s*([^\s\\]]*) *= *([^;\n]*)", False, True)
+        stylus_setup = StyleSheetSetup((b'.styl',), "^\s*([^\s\\]\[]*) *= *([^;\n]*)", False, True)
 
         # Add all setups to the setup tuple
         setups = (less_setup, sass_setup, stylus_setup)
