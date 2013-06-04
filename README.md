@@ -1,10 +1,10 @@
 # List stylesheet variables
-Simple Sublime 2/3 plugin for listing stylesheet preprocessor variables used in a file.
+Simple [Sublime 2/3](http://www.sublimetext.com/) plugin for listing stylesheet preprocessor variables used in a file.
 
 Supported preprocessors:
- - LESS
- - SASS/SCSS
- - Stylus
+ - [LESS](http://lesscss.org/)
+ - [SASS/SCSS](http://sass-lang.com/)
+ - [Stylus](http://learnboost.github.io/stylus/)
 
 The default hotkey is <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>L</kbd> (or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>
 +<kbd>L</kbd> on Linux to avoid conflicts with the lock screen hotkey).
