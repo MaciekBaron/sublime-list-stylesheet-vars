@@ -24,7 +24,7 @@ class ListStylesheetVariables(sublime_plugin.TextCommand):
 
         # Define setups
         less_setup = StyleSheetSetup((b'.less', b'.lessimport'), "(@[^\s\\]]*): *(.*);")
-        sass_setup = StyleSheetSetup((b'.sass', b'.scss'), "(?:^|[^\(])(\$[^\s\\]]*): *([^;\n]*)", True) # Last argument True because using partials
+        sass_setup = StyleSheetSetup((b'.sass', b'.scss'), "^\s*(\$[^\s\\]{}]*): *([^;\n]*);?", True) # Last argument True because using partials
         stylus_setup = StyleSheetSetup((b'.styl',), "^\s*([^\s\\]\[]*) *= *([^;\n]*)", False, True)
 
         # Add all setups to the setup tuple
@@ -46,6 +46,8 @@ class ListStylesheetVariables(sublime_plugin.TextCommand):
         # Handle imports
         imports = []
         imported_vars = []
+
+        compiled_regex = re.compile(chosen_setup.regex, re.MULTILINE)
 
         if handle_imports:
             self.view.find_all("@import \"(.*)\"", 0, "$1", imports)
@@ -78,7 +80,7 @@ class ListStylesheetVariables(sublime_plugin.TextCommand):
                     contents = f.read()
                     f.close()
 
-                    m = re.findall(chosen_setup.regex, contents)
+                    m = re.findall(compiled_regex, contents)
                     imported_vars = imported_vars + m
                 except:
                     print('Could not load file ' + filename)
