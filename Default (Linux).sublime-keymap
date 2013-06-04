@@ -1,5 +1,5 @@
 [
-  {
-    "keys": ["ctrl+shift+l"], "command": "list_stylesheet_variables"
-  }
+	{
+		"keys": ["ctrl+shift+l"], "command": "list_stylesheet_variables"
+	}
 ]
