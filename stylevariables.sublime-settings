@@ -1,7 +1,7 @@
 /*
  * List LESS variables default settings
- */
- {
-  "readImported": true,
-  "readAllViews": false
- }
+*/
+{
+	"readImported": true,
+	"readAllViews": false
+}

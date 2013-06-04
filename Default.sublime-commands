@@ -1,6 +1,6 @@
 [
 	{
-	    "caption": "List stylesheet variables",
-	    "command": "list_stylesheet_variables"
+		"caption": "List stylesheet variables",
+		"command": "list_stylesheet_variables"
 	}
 ]
