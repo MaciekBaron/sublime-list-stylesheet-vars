@@ -22,9 +22,10 @@ Please note that the plugin currently does not understand variable scope and the
 the occurances of a variable.
 
 ## Installation
-Execute the following command in your Sublime Packages folder: `git clone git://github.com/MaciekBaron/sublime-list-stylesheet-vars.git List\ Stylesheet\ Variables`
+The plugin can be installed using the popular [Sublime Package Control](http://wbond.net/sublime_packages/package_control) 
+plugin.
 
-I will prepare a plugin to Package Manager after additional testing
+Alternatively you can execute the following command in your Sublime Packages folder: `git clone git://github.com/MaciekBaron/sublime-list-stylesheet-vars.git List\ Stylesheet\ Variables`
 
 ## Configuration
 The settings file has currently two options:
