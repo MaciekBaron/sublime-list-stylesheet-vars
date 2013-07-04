@@ -36,7 +36,7 @@ The settings file has currently two options:
 Currently if the plugin checks all opened files, it will only check for imported files in the currently
 selected file.
 
-## Licence
+## License
 Copyright &copy; 2013 Maciej Baron
 
 Licensed under the Apache License, Version 2.0.
