@@ -123,4 +123,5 @@ class ListStylesheetVariables(sublime_plugin.TextCommand):
 
 class InsertText(sublime_plugin.TextCommand):
     def run(self, edit, string=''):
-        self.view.insert(edit, self.view.sel()[-1].end(), string)
+        for selection in self.view.sel():
+            self.view.insert(edit, selection.begin(), string)
