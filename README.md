@@ -3,7 +3,7 @@ Simple [Sublime 2/3](http://www.sublimetext.com/) plugin for listing stylesheet 
 
 Supported preprocessors:
  - [LESS](http://lesscss.org/)
- - [SASS/SCSS](http://sass-lang.com/)
+ - [SASS/SCSS](http://sass-lang.com/) (+ [eRuby .erb](https://en.wikipedia.org/wiki/ERuby) support)
  - [Stylus](http://learnboost.github.io/stylus/)
 
 The default hotkey is <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>L</kbd> (or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>
