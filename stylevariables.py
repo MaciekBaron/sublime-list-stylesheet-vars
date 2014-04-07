@@ -1,7 +1,5 @@
 import sublime, sublime_plugin, os, re
 
-master = []
-
 class StyleSheetSetup:
     def __init__(self, extensions, regex, partials=None, index=None):
         if partials is None:
@@ -118,10 +116,6 @@ class ListStylesheetVariables(sublime_plugin.TextCommand):
         self.variables = imported_vars + self.variables
         self.variables.sort()
         self.view.window().show_quick_panel(self.variables, self.insert_variable, sublime.MONOSPACE_FONT)
-        global master
-        master = self.variables
-        for i, val in enumerate(master):
-            master[i] = (val[0] + '\t' + val[1], val[0])
 
     def insert_variable(self, choice):
         if choice == -1:
@@ -132,7 +126,3 @@ class InsertText(sublime_plugin.TextCommand):
     def run(self, edit, string=''):
         for selection in self.view.sel():
             self.view.insert(edit, selection.begin(), string)
-
-class RuleCompletions(sublime_plugin.EventListener):
-    def on_query_completions(self, view, prefix, locations):
-        return master
