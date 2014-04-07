@@ -51,7 +51,7 @@ class ListStylesheetVariables(sublime_plugin.TextCommand):
         compiled_regex = re.compile(chosen_setup.regex, re.MULTILINE)
 
         if handle_imports:
-            self.view.find_all("@import \"(.*)\"", 0, "$1", imports)
+            self.view.find_all("@import [\"|\'](.*)[\"|\']", 0, "$1", imports)
 
             file_dir = os.path.dirname(fn).decode("utf-8")
 
